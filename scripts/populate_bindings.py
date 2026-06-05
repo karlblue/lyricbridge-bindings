@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 BINDINGS_FILE = PROJECT_ROOT / "bindings.json"
 LYRICS_DIR = PROJECT_ROOT / "lyrics"
+MISSING_OFFSET_DIR = PROJECT_ROOT / "lyrics_missing_offset"
 TIME_TAG_RE = re.compile(r"\[(\d{1,2}):(\d{2})\.(\d{1,3})\]")
 
 
@@ -54,33 +56,59 @@ def read_offset_ms(lrc_file: Path) -> int:
     raise ValueError(f'Could not find a "--" timestamp in {lrc_file.name}.')
 
 
-def existing_video_ids() -> dict[str, str]:
+def move_missing_offset_file(lrc_file: Path) -> Path:
+    MISSING_OFFSET_DIR.mkdir(exist_ok=True)
+    target = MISSING_OFFSET_DIR / lrc_file.name
+
+    if target.exists():
+        stem = lrc_file.stem
+        suffix = lrc_file.suffix
+        index = 1
+        while target.exists():
+            target = MISSING_OFFSET_DIR / f"{stem} ({index}){suffix}"
+            index += 1
+
+    return Path(shutil.move(str(lrc_file), str(target)))
+
+
+def existing_bindings_by_lyric_file() -> dict[str, dict]:
     data = read_json(BINDINGS_FILE)
-    result: dict[str, str] = {}
+    result: dict[str, dict] = {}
 
     for binding in data.get("bindings", []):
         if not isinstance(binding, dict):
             continue
 
         lyric_file = binding.get("lyricFile")
-        video_id = binding.get("videoId", "")
-        if isinstance(lyric_file, str) and isinstance(video_id, str):
-            result[lyric_file.replace("\\", "/")] = video_id
+        if isinstance(lyric_file, str):
+            result[lyric_file.replace("\\", "/")] = binding
 
     return result
 
 
 def build_bindings() -> list[dict]:
-    preserved_video_ids = existing_video_ids()
+    existing_bindings = existing_bindings_by_lyric_file()
     bindings = []
 
     for lrc_file in sorted(LYRICS_DIR.glob("*.lrc"), key=lambda path: path.name):
         lyric_file = f"lyrics/{lrc_file.name}"
+        existing = existing_bindings.get(lyric_file)
+        if existing is not None:
+            bindings.append(existing)
+            continue
+
+        try:
+            offset_ms = read_offset_ms(lrc_file)
+        except ValueError as error:
+            moved_to = move_missing_offset_file(lrc_file)
+            print(f"{error} Moved to {moved_to}")
+            continue
+
         bindings.append(
             {
-                "videoId": preserved_video_ids.get(lyric_file, ""),
+                "videoId": "",
                 "lyricFile": lyric_file,
-                "offsetMs": read_offset_ms(lrc_file),
+                "offsetMs": offset_ms,
             }
         )
 
