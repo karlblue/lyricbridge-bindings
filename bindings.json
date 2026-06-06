@@ -1966,9 +1966,9 @@
       "offsetMs": 10020
     },
     {
-      "videoId": "",
+      "videoId": "eisroO5np40",
       "lyricFile": "lyrics/0340 彼得持守的是真正的信与爱（女声独唱）.lrc",
-      "offsetMs": 9740
+      "offsetMs": 10000
     },
     {
       "videoId": "nS2u2-83s5g",
@@ -1976,14 +1976,14 @@
       "offsetMs": 8270
     },
     {
-      "videoId": "",
+      "videoId": "PlbyUHDOO5o",
       "lyricFile": "lyrics/0340 彼得持守的是真正的信与爱（男声独唱二）.lrc",
-      "offsetMs": 9050
+      "offsetMs": 8250
     },
     {
       "videoId": "LVzAd4FPB3E",
       "lyricFile": "lyrics/0341 人都要追求活出有意义的人生（女声独唱）.lrc",
-      "offsetMs": 8070
+      "offsetMs": 8600
     },
     {
       "videoId": "",
@@ -2313,7 +2313,7 @@
     {
       "videoId": "M1t0GoM-AvE",
       "lyricFile": "lyrics/0385 只要你不离开神（男声独唱）.lrc",
-      "offsetMs": 5900
+      "offsetMs": 6400
     },
     {
       "videoId": "7I8t9t7UKaY",
@@ -2503,7 +2503,7 @@
     {
       "videoId": "Ccig0nUbcK0",
       "lyricFile": "lyrics/0420 人类进入永远归宿的时候（女声独唱一）.lrc",
-      "offsetMs": 7260
+      "offsetMs": 8200
     },
     {
       "videoId": "",
@@ -3386,7 +3386,7 @@
       "offsetMs": 8860
     },
     {
-      "videoId": "",
+      "videoId": "m9zp_T4wOqU",
       "lyricFile": "lyrics/0645 真渴慕神的人神不丢弃（女声独唱一）.lrc",
       "offsetMs": 9070
     },
@@ -5594,6 +5594,11 @@
       "videoId": "",
       "lyricFile": "lyrics/1329 神放弃一個人意味着什麽.lrc",
       "offsetMs": 7640
+    },
+    {
+      "videoId": "6kxidDTyXI0",
+      "lyricFile": "sets/0018 诗歌合辑（十八）.lrc",
+      "offsetMs": 0
     }
   ]
 }
